@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Ad extends PanacheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
