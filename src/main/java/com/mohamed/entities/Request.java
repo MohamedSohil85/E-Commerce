@@ -1,4 +1,4 @@
 package com.mohamed.entities;
 
-public class Request {
+public class Request extends Ad  {
 }

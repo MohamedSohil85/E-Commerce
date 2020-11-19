@@ -2,6 +2,7 @@ package com.mohamed.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Ad extends PanacheEntity {
     @Id

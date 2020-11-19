@@ -1,4 +1,7 @@
 package com.mohamed.entities;
 
-public class Bid {
+import javax.persistence.Entity;
+
+@Entity
+public class Bid extends Ad{
 }
