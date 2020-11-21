@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @RestController
@@ -36,10 +37,12 @@ public class CustomerEndpoint {
 public Response saveNewCustomer(@RequestBody Customer customer){
         String lastName= customer.getLastName();
         String address= customer.getAddress();
+        String token= UUID.randomUUID().toString();
     Optional<Customer>optionalCustomer=customerRepository.findCustomer(lastName,address);
     if(optionalCustomer.isPresent()){
         return Response.status(302,"Object has been found").build();
     }
+    customer.setToken(token);
    customerRepository.persist(customer);
     return Response.status(Response.Status.CREATED).entity(customer).build();
 }

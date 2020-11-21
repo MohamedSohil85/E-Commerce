@@ -12,19 +12,16 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Setter
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingCart extends PanacheEntity {
+@NoArgsConstructor
+@Getter
+@Setter
+public class Order extends PanacheEntity {
     @OneToMany
-    private List<Request> requests;
-    @OneToOne
-    private Customer customer;
-    private int quantity;
-    private float total;
+    private List<ShoppingCart>shoppingCarts;
     @Temporal(value = TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europa/Berlin")
-    private Date OrderDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
+    private Date orderDate;
+    @OneToOne
+    private Payment payment;
 }

@@ -15,9 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class Payment extends PanacheEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+
     private String accountNumber;
     private String passWord;
     private String cardType;

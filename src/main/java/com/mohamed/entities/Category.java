@@ -13,9 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Category extends PanacheEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+
     private String categoryName;
     @OneToMany
     private List<Ad>adList;

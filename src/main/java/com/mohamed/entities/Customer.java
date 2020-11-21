@@ -16,13 +16,12 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Customer extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Customer extends PanacheEntity {
+
     private String lastName;
     private String firstName;
     private String address;
     private String phoneNumber;
     private String email;
+    private String token;
 }
