@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -34,7 +35,7 @@ public class CustomerEndpoint {
 @Path("/Customer")
 @POST
 @Produces(MediaType.APPLICATION_JSON_VALUE)
-public Response saveNewCustomer(@RequestBody Customer customer){
+public Response saveNewCustomer(@Valid Customer customer){
         String lastName= customer.getLastName();
         String address= customer.getAddress();
         String token= UUID.randomUUID().toString();

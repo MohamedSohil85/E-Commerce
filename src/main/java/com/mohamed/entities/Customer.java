@@ -12,16 +12,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
 public class Customer extends PanacheEntity {
-
+    @Size(min = 3,message = "min 3 character")
     private String lastName;
+    @Size(min = 3 ,message = "min 3 character")
     private String firstName;
+    @Size(min = 3,message = "min 3 character")
     private String address;
+    @Size(min = 7,message = "min 3 character")
     private String phoneNumber;
+    @Email(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+            "A-Z]{2,7}$")
     private String email;
     private String token;
 }

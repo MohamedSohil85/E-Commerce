@@ -7,4 +7,5 @@ import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CategoryRepository implements PanacheRepository<Category> {
+
 }

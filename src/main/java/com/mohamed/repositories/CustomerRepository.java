@@ -25,6 +25,6 @@ public class CustomerRepository implements PanacheRepository<Customer> {
                 .singleResultOptional();
     }
     public List<Customer>findCustomersByKeyword(String keyword){
-        return Customer.find("SELECT * FROM CUSTMER WHERE lastName LIKE = :keyword", keyword).list();
+        return Customer.find("SELECT * FROM CUSTMER WHERE lastName LIKE = :keyword", Parameters.with("keyword",keyword)).list();
     }
 }
