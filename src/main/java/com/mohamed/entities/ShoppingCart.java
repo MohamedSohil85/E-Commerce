@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -18,13 +19,16 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCart extends PanacheEntity {
     @OneToMany
-    private List<Request> requests;
+    private List<Request> RequestList;
     @OneToOne
     private Customer customer;
+    @NotNull
     private int quantity;
+    @NotNull
     private float total;
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europa/Berlin")
     private Date OrderDate;
+
 
 }

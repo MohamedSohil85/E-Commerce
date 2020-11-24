@@ -22,6 +22,5 @@ public class Order extends PanacheEntity {
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date orderDate;
-    @OneToOne
-    private Payment payment;
+
 }

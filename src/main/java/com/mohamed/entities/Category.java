@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Category extends PanacheEntity {
-
+    @Size(min = 3,message = "input Error !")
     private String categoryName;
     @OneToMany
     private List<Ad>adList;
