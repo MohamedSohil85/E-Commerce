@@ -13,7 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 
 public class PaymentEndpoints {
     @Inject
@@ -31,4 +30,7 @@ public class PaymentEndpoints {
         return Response.status(Response.Status.CREATED).build();
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
+
+
+
 }

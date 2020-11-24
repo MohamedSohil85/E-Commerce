@@ -11,7 +11,6 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 
-@Singleton
 @ApplicationScoped
 public class CustomerRepository implements PanacheRepository<Customer> {
 
