@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-@RestController
+@Path("/api")
 public class CustomerEndpoint {
     @Inject
     CustomerRepository customerRepository;
@@ -35,6 +36,7 @@ public class CustomerEndpoint {
 @Path("/Customer")
 @POST
 @Produces(MediaType.APPLICATION_JSON_VALUE)
+@Transactional
 public Response saveNewCustomer(@Valid Customer customer){
         String lastName= customer.getLastName();
         String address= customer.getAddress();
@@ -44,7 +46,7 @@ public Response saveNewCustomer(@Valid Customer customer){
         return Response.status(302,"Object has been found").build();
     }
     customer.setToken(token);
-   customerRepository.persist(customer);
+    customerRepository.persist(customer);
     return Response.status(Response.Status.CREATED).entity(customer).build();
 }
 @Path("findCustomerByName/{lastName}")

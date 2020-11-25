@@ -27,4 +27,6 @@ public class Ad extends PanacheEntity {
     private Category category;
     @ManyToOne
     private ShoppingCart shoppingCart;
+    @ManyToOne
+    private Supplier supplier;
 }

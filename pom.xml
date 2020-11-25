@@ -48,10 +48,12 @@
             <artifactId>quarkus-hibernate-orm</artifactId>
         </dependency>
         <!-- JDBC driver dependencies -->
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-jdbc-mariadb -->
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -121,6 +123,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>eCommerce</finalName>
     </build>
     <profiles>
         <profile>

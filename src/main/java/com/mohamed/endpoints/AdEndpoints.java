@@ -11,12 +11,13 @@ import org.hibernate.ResourceClosedException;
 import org.springframework.http.MediaType;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
-
+@Path("/api")
 public class AdEndpoints {
     @Inject
     private AdRepository adRepository;
@@ -27,12 +28,14 @@ public class AdEndpoints {
     @Path("/Request")
     @POST
     @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public Response createRequest(@Valid Request request){
        adRepository.persist(request);
         return Response.status(Response.Status.CREATED).build();
     }
     @POST
     @Path("/Bid")
+    @Transactional
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response createBid(@Valid Bid bid){
         adRepository.persist(bid);
@@ -51,6 +54,7 @@ public class AdEndpoints {
     
     @POST
     @Path("/BidByCategory/{categoryName}")
+    @Transactional
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response saveAdtoCategory(@Valid Bid bid,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
         return categoryRepository.findCategoryByName(categoryName).map(category -> {
@@ -63,6 +67,7 @@ public class AdEndpoints {
 
     @POST
     @Path("/RequestByCategory/{categoryName}")
+    @Transactional
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response saveRequesttoCategory(@Valid Request request,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
         return categoryRepository.findCategoryByName(categoryName).map(category -> {

@@ -7,6 +7,7 @@ import io.quarkus.panache.common.Sort;
 import org.springframework.http.MediaType;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,7 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
-
+@Path("/api")
 public class CategoryEndpoints {
     @Inject
     private CategoryRepository categoryRepository;
@@ -23,6 +24,7 @@ public class CategoryEndpoints {
     @Path("/Category")
     @POST
     @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public Response createCategory(@Valid Category category){
         String name=category.getCategoryName();
         Optional<Category>optionalCategory=categoryRepository.findCategoryByName(name);
