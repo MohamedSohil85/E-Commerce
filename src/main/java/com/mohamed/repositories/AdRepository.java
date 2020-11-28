@@ -29,5 +29,8 @@ public class AdRepository implements PanacheRepository<Ad> {
     public Optional<Request>findAdByName(String name){
         return Request.find("productName",name).singleResultOptional();
     }
+    public Optional<Bid>findBidByName(String productName){
+        return Bid.find("productName",productName).singleResultOptional();
+    }
 
 }

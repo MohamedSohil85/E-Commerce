@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Entity
 public class Payment extends PanacheEntity {
-    @NotNull
+
     private String accountNumber;
     @Size(min = 3,message = "3 character at Least")
     private String passWord;

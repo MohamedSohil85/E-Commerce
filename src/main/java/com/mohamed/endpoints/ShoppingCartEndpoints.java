@@ -33,7 +33,7 @@ public class ShoppingCartEndpoints {
     @Path("/ShoppingCart/{customerName}/Customer/{productName}/Product")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response saveToShoppingCart(@PathParam("customerName")String customerName,@PathParam("productName")String productName, @Valid ShoppingCart shoppingCart){
-        return adRepository.findAdByName(productName).map(request -> {
+        return adRepository.findBidByName(productName).map(request -> {
             Optional<Customer>optionalCustomer=customerRepository.findBylastName(customerName);
             shoppingCart.setCustomer(optionalCustomer.get());
             shoppingCart.setOrderDate(new Date());
@@ -53,6 +53,22 @@ public class ShoppingCartEndpoints {
          throw new ResourceNotFoundException("Rescource not found");
         }
         return shoppingCarts;
+    }
+    // save products to shoppingcart
+    @POST
+    @Path("/ShoppingCart/{productName}/Product")
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public Response addToCart(@PathParam("productName")String productName,@Valid ShoppingCart shoppingCart) throws ResourceNotFoundException{
+    return adRepository.findBidByName(productName).map(ad -> {
+        shoppingCart.setOrderDate(new Date());
+
+        shoppingCart.setTotal(ad.getPrice()*shoppingCart.getQuantity());
+        ad.setShoppingCart(shoppingCart);
+        shoppingCart.getRequestList().add(ad);
+        shoppingCartRepository.persist(shoppingCart);
+        return Response.status(Response.Status.CREATED).build();
+    }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
 
 }

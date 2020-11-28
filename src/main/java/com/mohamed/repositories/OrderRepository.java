@@ -1,10 +1,10 @@
 package com.mohamed.repositories;
 
-import com.mohamed.entities.Order;
+import com.mohamed.entities.Orders;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class OrderRepository implements PanacheRepository<Order> {
+public class OrderRepository implements PanacheRepository<Orders> {
 }

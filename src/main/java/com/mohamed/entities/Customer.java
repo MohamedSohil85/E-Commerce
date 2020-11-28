@@ -1,22 +1,22 @@
 package com.mohamed.entities;
 
-
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.security.jpa.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.List;
+
 
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
+@UserDefinition
 public class Customer extends PanacheEntity {
     @Size(min = 3,message = "min 3 character")
     private String lastName;
@@ -31,6 +31,13 @@ public class Customer extends PanacheEntity {
             "A-Z]{2,7}$")
     private String email;
     private String token;
+    @Username
+    private String username;
+    @Password
+    private String password;
     @OneToOne
     private Payment payment;
+    @Roles
+    @OneToMany
+    private List<Role> roles;
 }

@@ -2,13 +2,16 @@ package com.mohamed.endpoints;
 
 import com.mohamed.entities.Customer;
 import com.mohamed.repositories.CustomerRepository;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.panache.common.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.wildfly.security.password.interfaces.BCryptPassword;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -27,6 +30,7 @@ public class CustomerEndpoint {
     @Path("/customers")
     @GET
     @Produces(value = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed("Admin")
     public ResponseEntity<Customer> loadCustomers(){
       List<Customer> customerList= (List<Customer>) customerRepository.findAll(Sort.ascending("lastName"));
       return new ResponseEntity(customerList, HttpStatus.FOUND);
@@ -46,6 +50,9 @@ public Response saveNewCustomer(@Valid Customer customer){
         return Response.status(302,"Object has been found").build();
     }
     customer.setToken(token);
+    String pw= customer.getPassword();
+    String encode= BcryptUtil.bcryptHash(pw);
+    customer.setPassword(encode);
     customerRepository.persist(customer);
     return Response.status(Response.Status.CREATED).entity(customer).build();
 }

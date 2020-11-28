@@ -1,13 +1,8 @@
 package com.mohamed.repositories;
-
 import com.mohamed.entities.Customer;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
-import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 

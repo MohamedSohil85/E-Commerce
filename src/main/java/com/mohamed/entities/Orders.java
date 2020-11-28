@@ -16,11 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Order extends PanacheEntity {
-    @OneToMany
-    private List<ShoppingCart>shoppingCarts;
+public class Orders extends PanacheEntity {
+    @ManyToOne
+    private ShoppingCart shoppingCart;
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date orderDate;
+    @ManyToOne
+    private Customer customer;
+
 
 }

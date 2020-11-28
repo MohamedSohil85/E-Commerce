@@ -23,6 +23,8 @@ public class Ad extends PanacheEntity {
     private String description;
     @Size(min = 3,message = "3 character at Least")
     private String standort;
+    @NotNull
+    private int quantity;
     @ManyToOne
     private Category category;
     @ManyToOne

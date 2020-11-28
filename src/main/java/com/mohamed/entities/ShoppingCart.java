@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCart extends PanacheEntity {
     @OneToMany
-    private List<Request> RequestList;
+    private List<Ad> RequestList;
     @OneToOne
     private Customer customer;
     @NotNull

@@ -32,7 +32,7 @@ public class PaymentEndpoints {
         return Response.status(Response.Status.CREATED).build();
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
-
+// save payment to customer
 
 
 }
