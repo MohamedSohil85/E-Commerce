@@ -4,9 +4,7 @@ import com.mohamed.entities.Customer;
 import com.mohamed.entities.Request;
 import com.mohamed.entities.ShoppingCart;
 import com.mohamed.exceptions.ResourceNotFoundException;
-import com.mohamed.repositories.AdRepository;
-import com.mohamed.repositories.CustomerRepository;
-import com.mohamed.repositories.ShoppingCartRepository;
+import com.mohamed.repositories.*;
 import org.springframework.http.MediaType;
 
 import javax.inject.Inject;
@@ -24,17 +22,27 @@ public class ShoppingCartEndpoints {
     @Inject
     ShoppingCartRepository shoppingCartRepository;
     @Inject
-    AdRepository adRepository;
+    BidRepository bidRepository;
     @Inject
     CustomerRepository customerRepository;
+    @Inject
+    RequestRepository requestRepository;
+    @Inject
+    AdRepository adRepository;
 
     @POST
     @Transactional
     @Path("/ShoppingCart/{customerName}/Customer/{productName}/Product")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response saveToShoppingCart(@PathParam("customerName")String customerName,@PathParam("productName")String productName, @Valid ShoppingCart shoppingCart){
-        return adRepository.findBidByName(productName).map(request -> {
+    public Response saveBidToShoppingCart(@PathParam("customerName")String customerName,@PathParam("productName")String productName, @Valid ShoppingCart shoppingCart){
+        return bidRepository.findBidByName(productName).map(request -> {
             Optional<Customer>optionalCustomer=customerRepository.findBylastName(customerName);
+
+            if(shoppingCart.getQuantity()>request.getQuantity()){
+               return Response.serverError().build();
+            }
+            int quantity=request.getQuantity()-shoppingCart.getQuantity();
+            request.setQuantity(quantity);
             shoppingCart.setCustomer(optionalCustomer.get());
             shoppingCart.setOrderDate(new Date());
             shoppingCart.setTotal(request.getPrice()*shoppingCart.getQuantity());
@@ -59,10 +67,9 @@ public class ShoppingCartEndpoints {
     @Path("/ShoppingCart/{productName}/Product")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public Response addToCart(@PathParam("productName")String productName,@Valid ShoppingCart shoppingCart) throws ResourceNotFoundException{
-    return adRepository.findBidByName(productName).map(ad -> {
+    public Response saveAdToCart(@PathParam("productName")String productName,@Valid ShoppingCart shoppingCart) throws ResourceNotFoundException{
+    return adRepository.findAdByName(productName).map(ad -> {
         shoppingCart.setOrderDate(new Date());
-
         shoppingCart.setTotal(ad.getPrice()*shoppingCart.getQuantity());
         ad.setShoppingCart(shoppingCart);
         shoppingCart.getRequestList().add(ad);

@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Path("/api")
@@ -25,11 +26,11 @@ public class AdEndpoints {
     private CategoryRepository categoryRepository;
 
 
-    @Path("/Request")
+    @Path("/Ad")
     @POST
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public Response createRequest(@Valid Request request){
+    public Response createRequest(@Valid Ad request){
        adRepository.persist(request);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -59,6 +60,7 @@ public class AdEndpoints {
     public Response saveAdtoCategory(@Valid Bid bid,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
         return categoryRepository.findCategoryByName(categoryName).map(category -> {
             bid.setCategory(category);
+            bid.setPublishDate(new Date());
             category.getAdList().add(bid);
             adRepository.persist(bid);
             return Response.status(Response.Status.CREATED).build();

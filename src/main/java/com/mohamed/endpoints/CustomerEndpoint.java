@@ -1,7 +1,9 @@
 package com.mohamed.endpoints;
 
 import com.mohamed.entities.Customer;
+import com.mohamed.entities.Role;
 import com.mohamed.repositories.CustomerRepository;
+import com.mohamed.repositories.RoleRepository;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.panache.common.Sort;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class CustomerEndpoint {
     @Inject
     CustomerRepository customerRepository;
+    @Inject
+    RoleRepository roleRepository;
 
     @Path("/customers")
     @GET
@@ -66,5 +70,18 @@ public Response findCustomerBylastName(@PathParam("lastName")String lastName){
      }
      return Response.status(Response.Status.FOUND).entity(Customers).build();
 }
+    @Path("/RoleByCustomerId/{id}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public Response saveRole(@PathParam("id")Long id,@Valid Role role){
+        return customerRepository.findByIdOptional(id).map(customer -> {
+            customer.getRoles().add(role);
+            role.setCustomer(customer);
+            roleRepository.persist(role);
+            return Response.status(Response.Status.CREATED).build();
+
+        }).orElse(Response.noContent().build());
+    }
 
 }

@@ -17,9 +17,7 @@ public class AdRepository implements PanacheRepository<Ad> {
     public List<Ad> getlist() {
         return Ad.listAll(Sort.descending("productName"));
     }
-    public List<Bid> getBidList(){
-        return Bid.listAll(Sort.descending("productName"));
-    }
+
     public List<Ad> findByAdName(String productName) {
         return Ad.find("productName",productName).list();
     }
@@ -29,8 +27,6 @@ public class AdRepository implements PanacheRepository<Ad> {
     public Optional<Request>findAdByName(String name){
         return Request.find("productName",name).singleResultOptional();
     }
-    public Optional<Bid>findBidByName(String productName){
-        return Bid.find("productName",productName).singleResultOptional();
-    }
+
 
 }

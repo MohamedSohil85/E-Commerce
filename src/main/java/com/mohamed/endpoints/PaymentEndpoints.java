@@ -2,6 +2,7 @@ package com.mohamed.endpoints;
 
 import com.mohamed.entities.Payment;
 import com.mohamed.exceptions.ResourceNotFoundException;
+import com.mohamed.repositories.CustomerRepository;
 import com.mohamed.repositories.PaymentRepository;
 import com.mohamed.repositories.ShoppingCartRepository;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ public class PaymentEndpoints {
     PaymentRepository paymentRepository;
     @Inject
     ShoppingCartRepository shoppingCartRepository;
+    @Inject
+    CustomerRepository customerRepository;
 
     @Path("/Payment/{shoppingcartId}/ShoppingCart")
     @POST
@@ -33,6 +36,18 @@ public class PaymentEndpoints {
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
 // save payment to customer
+    @Path("/PaymentByCustomername/{customerName}")
+    @POST
+    @Transactional
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response addAccountToCustomer(@PathParam("customerName")String name,@Valid Payment payment){
+    return customerRepository.findBylastName(name).map(customer -> {
+        customer.setPayment(payment);
+        customerRepository.persist(customer);
+        return Response.status(Response.Status.CREATED).build();
+    }).orElse(Response.noContent().build());
+
+    }
 
 
 }
