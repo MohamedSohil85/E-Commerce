@@ -46,7 +46,7 @@ public class AdEndpoints {
     @Path("/Ads")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response getAds()throws ResourceNotFoundException {
-        List<Ad>adList=adRepository.getlist();
+        List<Ad>adList= (List<Ad>) adRepository.findAll();
         if (adList.isEmpty()){
             throw new ResourceNotFoundException("Resource not found");
         }

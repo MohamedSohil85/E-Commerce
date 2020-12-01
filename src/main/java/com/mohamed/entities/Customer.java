@@ -1,5 +1,6 @@
 package com.mohamed.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.security.jpa.*;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,5 +41,6 @@ public class Customer extends PanacheEntity {
     private Payment payment;
     @Roles
     @OneToMany
-    private List<Role> roles;
+    @JsonIgnore
+    private List<Role> roles=new ArrayList<>();
 }

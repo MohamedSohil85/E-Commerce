@@ -35,9 +35,10 @@ public class CustomerEndpoint {
     @GET
     @Produces(value = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed("Admin")
-    public ResponseEntity<Customer> loadCustomers(){
-      List<Customer> customerList= (List<Customer>) customerRepository.findAll(Sort.ascending("lastName"));
-      return new ResponseEntity(customerList, HttpStatus.FOUND);
+    public Response loadCustomers(){
+   List<Customer>customers=customerRepository.getCusttomers();
+   return Response.ok(customers).build();
+
 
     }
 

@@ -2,6 +2,8 @@ package com.mohamed.repositories;
 import com.mohamed.entities.Customer;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
+import io.quarkus.panache.common.Sort;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +25,8 @@ public class CustomerRepository implements PanacheRepository<Customer> {
     }
     public Optional<Customer>findBylastName(String name){
         return Customer.find("lastName",name).singleResultOptional();
+    }
+    public List<Customer>getCusttomers(){
+        return Customer.listAll(Sort.descending("lastName"));
     }
 }
