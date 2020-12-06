@@ -24,7 +24,7 @@ public class AdRepository implements PanacheRepository<Ad> {
     public List<Ad> findByKeyword(String name){
         return Ad.find("SELECT * FROM AD WHERE productName = :keyword", Parameters.with("keyword",name)).list();
     }
-    public Optional<Request>findAdByName(String name){
+    public Optional<Bid>findAdByName(String name){
         return Request.find("productName",name).singleResultOptional();
     }
 

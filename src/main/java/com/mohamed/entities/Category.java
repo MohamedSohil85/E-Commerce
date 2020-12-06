@@ -1,6 +1,7 @@
 package com.mohamed.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Category extends PanacheEntity {
     @Size(min = 3,message = "input Error !")
     private String categoryName;

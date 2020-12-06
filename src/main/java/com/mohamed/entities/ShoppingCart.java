@@ -1,14 +1,13 @@
 package com.mohamed.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCart extends PanacheEntity {
-    @OneToMany
-    private List<Ad> RequestList;
+    @OneToMany(mappedBy = "shoppingCart")
+    @JsonIgnore
+    List<Bid>adList=new ArrayList<>();
     @OneToOne
     private Customer customer;
     @NotNull
@@ -27,7 +27,7 @@ public class ShoppingCart extends PanacheEntity {
     @NotNull
     private float total;
     @Temporal(value = TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europa/Berlin")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date OrderDate;
 
 

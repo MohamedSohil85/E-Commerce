@@ -6,6 +6,7 @@ import com.mohamed.entities.Category;
 import com.mohamed.entities.Request;
 import com.mohamed.exceptions.ResourceNotFoundException;
 import com.mohamed.repositories.AdRepository;
+import com.mohamed.repositories.BidRepository;
 import com.mohamed.repositories.CategoryRepository;
 import org.hibernate.ResourceClosedException;
 import org.springframework.http.MediaType;
@@ -21,9 +22,11 @@ import java.util.Optional;
 @Path("/api")
 public class AdEndpoints {
     @Inject
-    private AdRepository adRepository;
+     AdRepository adRepository;
     @Inject
-    private CategoryRepository categoryRepository;
+   CategoryRepository categoryRepository;
+    @Inject
+    BidRepository bidRepository;
 
 
     @Path("/Ad")
@@ -38,7 +41,7 @@ public class AdEndpoints {
     @Path("/Bid")
     @Transactional
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response createBid(@Valid Bid bid){
+    public Response createBid(@Valid Ad bid){
         adRepository.persist(bid);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -62,7 +65,7 @@ public class AdEndpoints {
             bid.setCategory(category);
             bid.setPublishDate(new Date());
             category.getAdList().add(bid);
-            adRepository.persist(bid);
+            bidRepository.persist(bid);
             return Response.status(Response.Status.CREATED).build();
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
@@ -79,6 +82,12 @@ public class AdEndpoints {
             return Response.status(Response.Status.CREATED).build();
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
-    
+    @GET
+    @Path("/findAdByName/{name}")
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public Response findProductByName(@PathParam("name")String name){
+        Optional<Bid>optionalBid=bidRepository.findBidByName(name);
+        return Response.ok(optionalBid).build();
+    }
 
 }
