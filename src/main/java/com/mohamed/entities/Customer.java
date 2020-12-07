@@ -3,6 +3,7 @@ package com.mohamed.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.security.jpa.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @UserDefinition
 public class Customer extends PanacheEntity {
@@ -39,6 +41,9 @@ public class Customer extends PanacheEntity {
     private String password;
     @OneToOne
     private Payment payment;
+    @OneToOne
+
+    private ShoppingCart shoppingCart;
     @Roles
     @OneToMany
     @JsonIgnore

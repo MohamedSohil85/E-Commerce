@@ -2,17 +2,14 @@ package com.mohamed.endpoints;
 
 import com.mohamed.entities.Customer;
 import com.mohamed.entities.Role;
+import com.mohamed.entities.ShoppingCart;
+import com.mohamed.exceptions.ResourceNotFoundException;
 import com.mohamed.repositories.CustomerRepository;
 import com.mohamed.repositories.RoleRepository;
+import com.mohamed.repositories.ShoppingCartRepository;
 import io.quarkus.elytron.security.common.BcryptUtil;
-import io.quarkus.panache.common.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.wildfly.security.password.interfaces.BCryptPassword;
 
+import org.springframework.http.MediaType;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -24,12 +21,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 
+
 @Path("/api")
 public class CustomerEndpoint {
     @Inject
     CustomerRepository customerRepository;
     @Inject
     RoleRepository roleRepository;
+    @Inject
+    ShoppingCartRepository shoppingCartRepository;
 
     @Path("/customers")
     @GET
@@ -83,6 +83,24 @@ public Response findCustomerBylastName(@PathParam("lastName")String lastName){
             return Response.status(Response.Status.CREATED).build();
 
         }).orElse(Response.noContent().build());
+    }
+    @Path("/ShoppingCartByCustomerName/{customerName}/customer")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public Response createShoppingCartByCustomername(ShoppingCart shoppingCart, @PathParam("customerName")String customerName) throws ResourceNotFoundException {
+        Optional<Customer>customerOptional=customerRepository.findBylastName(customerName);
+        if(customerOptional.isEmpty()){
+         throw new ResourceNotFoundException("Object not found");
+        }
+        shoppingCart=new ShoppingCart();
+        Customer customer=customerOptional.get();
+        String token=UUID.randomUUID().toString();
+        shoppingCart.setCartCode(token);
+        shoppingCart.setCustomer(customer);
+        customer.setShoppingCart(shoppingCart);
+        shoppingCartRepository.persist(shoppingCart);
+        return Response.ok("Cart-Code :"+token).build();
     }
 
 }

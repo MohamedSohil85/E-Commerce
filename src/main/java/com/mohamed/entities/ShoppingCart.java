@@ -17,16 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCart extends PanacheEntity {
 
+    private String cartCode;
     @OneToOne
+    @JsonIgnore
     private Customer customer;
-    @NotNull
     private int quantity;
-    @NotNull
     private float total;
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date OrderDate;
-    @OneToOne
-    private Ad ad;
+    @OneToMany
+    private List<Ad> adList;
+
 
 }

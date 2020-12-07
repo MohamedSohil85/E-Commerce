@@ -36,7 +36,7 @@ public class Ad extends PanacheEntity {
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date publishDate;
-    @OneToOne
+    @ManyToOne
     private ShoppingCart shoppingCart;
 
 }
