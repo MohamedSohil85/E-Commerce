@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,4 +17,6 @@ public class Supplier extends PanacheEntity {
     private String ContactName;
     private String address;
     private String phoneNumber;
+    @OneToMany
+    private List<Ad> adList;
 }

@@ -19,7 +19,7 @@ import java.util.Optional;
 @Path("/api")
 public class CategoryEndpoints {
     @Inject
-    private CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     @Path("/Category")
     @POST

@@ -1,14 +1,9 @@
 package com.mohamed.endpoints;
 
 import com.mohamed.entities.Ad;
-import com.mohamed.entities.Bid;
-import com.mohamed.entities.Category;
-import com.mohamed.entities.Request;
 import com.mohamed.exceptions.ResourceNotFoundException;
 import com.mohamed.repositories.AdRepository;
-import com.mohamed.repositories.BidRepository;
 import com.mohamed.repositories.CategoryRepository;
-import org.hibernate.ResourceClosedException;
 import org.springframework.http.MediaType;
 
 import javax.inject.Inject;
@@ -25,8 +20,7 @@ public class AdEndpoints {
      AdRepository adRepository;
     @Inject
    CategoryRepository categoryRepository;
-    @Inject
-    BidRepository bidRepository;
+
 
 
     @Path("/Ad")
@@ -37,19 +31,12 @@ public class AdEndpoints {
        adRepository.persist(request);
         return Response.status(Response.Status.CREATED).build();
     }
-    @POST
-    @Path("/Bid")
-    @Transactional
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response createBid(@Valid Ad bid){
-        adRepository.persist(bid);
-        return Response.status(Response.Status.CREATED).build();
-    }
+
     @GET
     @Path("/Ads")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response getAds()throws ResourceNotFoundException {
-        List<Ad>adList= (List<Ad>) adRepository.findAll();
+        List<Ad>adList= adRepository.getlist();
         if (adList.isEmpty()){
             throw new ResourceNotFoundException("Resource not found");
         }
@@ -60,33 +47,22 @@ public class AdEndpoints {
     @Path("/BidByCategory/{categoryName}")
     @Transactional
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response saveAdtoCategory(@Valid Bid bid,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
+    public Response saveAdtoCategory(@Valid Ad bid,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
         return categoryRepository.findCategoryByName(categoryName).map(category -> {
             bid.setCategory(category);
             bid.setPublishDate(new Date());
             category.getAdList().add(bid);
-            bidRepository.persist(bid);
+            adRepository.persist(bid);
             return Response.status(Response.Status.CREATED).build();
         }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
     }
 
-    @POST
-    @Path("/RequestByCategory/{categoryName}")
-    @Transactional
-    @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response saveRequesttoCategory(@Valid Request request,@PathParam("categoryName")String categoryName)throws ResourceNotFoundException{
-        return categoryRepository.findCategoryByName(categoryName).map(category -> {
-            request.setCategory(category);
-            category.getAdList().add(request);
-            adRepository.persist(request);
-            return Response.status(Response.Status.CREATED).build();
-        }).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
-    }
+
     @GET
     @Path("/findAdByName/{name}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response findProductByName(@PathParam("name")String name){
-        Optional<Bid>optionalBid=bidRepository.findBidByName(name);
+        Optional<Ad>optionalBid=adRepository.findAdByName(name);
         return Response.ok(optionalBid).build();
     }
 

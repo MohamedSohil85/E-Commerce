@@ -23,22 +23,20 @@ public class ShoppingCartEndpoints {
     CustomerRepository customerRepository;
     @Inject
     AdRepository adRepository;
-    @Inject
-    BidRepository bidRepository;
+
 
     @POST
     @Transactional
     @Path("/ShoppingCart/{customerName}/Customer/{productName}/Product")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public Response saveBidToShoppingCart(@PathParam("customerName")String customerName,@PathParam("productName")String productName,@Valid ShoppingCart shoppingCart){
-        return bidRepository.findBidByName(productName).map(request -> {
+        return adRepository.findAdByName(productName).map(ad -> {
             Optional<Customer>optionalCustomer=customerRepository.findBylastName(customerName);
             shoppingCart.setCustomer(optionalCustomer.get());
             shoppingCart.setOrderDate(new Date());
-            shoppingCart.setTotal(request.getPrice()*shoppingCart.getQuantity());
-            shoppingCart.getAdList().add(request);
-            request.setShoppingCart(shoppingCart);
-
+            shoppingCart.setTotal(ad.getPrice()*shoppingCart.getQuantity());
+            ad.setShoppingCart(shoppingCart);
+            shoppingCart.setAd(ad);
             shoppingCartRepository.persist(shoppingCart);
             return Response.status(Response.Status.CREATED).build();
         }).orElse(Response.noContent().build());

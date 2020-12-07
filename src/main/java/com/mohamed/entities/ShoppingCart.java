@@ -7,19 +7,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Setter
 @Getter
+@Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCart extends PanacheEntity {
-    @OneToMany(mappedBy = "shoppingCart")
-    @JsonIgnore
-    List<Bid>adList=new ArrayList<>();
+
     @OneToOne
     private Customer customer;
     @NotNull
@@ -29,6 +26,7 @@ public class ShoppingCart extends PanacheEntity {
     @Temporal(value = TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date OrderDate;
-
+    @OneToOne
+    private Ad ad;
 
 }
