@@ -4,9 +4,11 @@ import com.mohamed.entities.Ad;
 import com.mohamed.exceptions.ResourceNotFoundException;
 import com.mohamed.repositories.AdRepository;
 import com.mohamed.repositories.CategoryRepository;
+import io.quarkus.panache.common.Parameters;
 import org.springframework.http.MediaType;
 
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -14,6 +16,8 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Path("/api")
 public class AdEndpoints {
     @Inject
@@ -64,6 +68,17 @@ public class AdEndpoints {
     public Response findProductByName(@PathParam("name")String name){
         Optional<Ad>optionalBid=adRepository.findAdByName(name);
         return Response.ok(optionalBid).build();
+    }
+    @GET
+    @Path("/findAdByKeyword/{searchkey}")
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public List<Ad>findProductBykeyword(@PathParam("searchkey")String keyword)throws ResourceNotFoundException{
+        List<Ad>adList= adRepository.stream("from Ad where productName = :startLetter", Parameters.with("startLetter",keyword)).collect(Collectors.toList());
+        if (adList.isEmpty()){
+            throw new ResourceNotFoundException("Resource not found");
+        }
+
+        return adList;
     }
 
 }

@@ -27,6 +27,7 @@ public class ShoppingCart extends PanacheEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Europa/Berlin")
     private Date OrderDate;
     @OneToMany
+    @JsonIgnore
     private List<Ad> adList;
 
 

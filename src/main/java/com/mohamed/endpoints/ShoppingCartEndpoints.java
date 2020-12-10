@@ -28,15 +28,15 @@ public class ShoppingCartEndpoints {
 
     @POST
     @Transactional
-    @Path("/ShoppingCart/{id}/Customer/{productName}/Product")
+    @Path("/ShoppingCart")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response saveBidToShoppingCart(@PathParam("id")Long customerName,@PathParam("productName")String productName){
-       return customerRepository.findByIdOptional(customerName).map(customer -> {
+    public Response saveBidToShoppingCart(@QueryParam("id") Long id,@QueryParam("productName") String productName){
+       return customerRepository.findByIdOptional(id).map(customer -> {
        Optional<Ad>optionalAd=adRepository.findAdByName(productName);
-       Optional<ShoppingCart>optionalShoppingCart=shoppingCartRepository.findShoppingCartByCustomerName(customerName);
+       Optional<ShoppingCart>optionalShoppingCart=shoppingCartRepository.findShoppingCartByCustomerName(id);
        Ad ad=optionalAd.get();
        ShoppingCart cart=optionalShoppingCart.get();
-
+       cart.setOrderDate(new Date());
        cart.getAdList().add(ad);
        ad.setShoppingCart(cart);
        customer.setShoppingCart(cart);
@@ -58,12 +58,14 @@ public class ShoppingCartEndpoints {
 
     @POST
     @Transactional
-    @Path("/ShoppingCart/{cartToken}/Ad/{productName}")
+    @Path("/addProductToCart")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public Response addProductToCart(@PathParam("cartToken")String token,@PathParam("productName")String name){
+    public Response addProductToCart(@QueryParam("cartToken") String token,@QueryParam("productName") String name,@QueryParam("Quantity")int quantity){
         return shoppingCartRepository.findCartByToken(token).map(shoppingCart -> {
             Optional<Ad>optionalAd=adRepository.findAdByName(name);
             Ad ad=optionalAd.get();
+            shoppingCart.setQuantity(quantity);
+            shoppingCart.setOrderDate(new Date());
             shoppingCart.setTotal(shoppingCart.getQuantity()*ad.getPrice());
             shoppingCart.getAdList().add(ad);
             ad.setShoppingCart(shoppingCart);
