@@ -73,7 +73,11 @@ public class AdEndpoints {
     @Path("/findAdByKeyword/{searchkey}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public List<Ad>findProductBykeyword(@PathParam("searchkey")String keyword)throws ResourceNotFoundException{
-        List<Ad>adList= adRepository.stream("from Ad where productName = :startLetter", Parameters.with("startLetter",keyword)).collect(Collectors.toList());
+
+        
+        List<Ad>adList= adRepository
+                .stream("from Ad where productName like CONCAT(:keyword,'%')", Parameters.with("keyword",keyword))
+                .collect(Collectors.toList());
         if (adList.isEmpty()){
             throw new ResourceNotFoundException("Resource not found");
         }
